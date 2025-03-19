@@ -1,5 +1,6 @@
 #pragma once // compiler directive to only include once, even if included elsewhere
 #include <stddef.h>
+#include <stdbool.h>
 #include "game.h"  // double check if actually neccessary, but it should be
 
 typedef struct Hash_Node { // node for linked list
@@ -9,26 +10,26 @@ typedef struct Hash_Node { // node for linked list
 
 typedef struct Hash_Table {
     hash_node_t **buckets; // array of pointers to linked lists
-    unsigned int size; // number of buckets
-    unsigned int count; // number of games stored
+    size_t size; // number of buckets
+    size_t count; // number of games stored
 } hash_table_t;
 
 // Create a new hash table with the given number of buckets
 // use calloc (size, sizeof(hash_node_t)
-hash_table_t *create_table(unsigned int size);
+hash_table_t *create_table(size_t size); // done
 
 // Calculate a hash value for a string
 // "done", uses djb2 alg
-unsigned int hash(const char *str, unsigned int table_size);
+size_t hash(const char *str, hash_table_t *table); // done
 
 // Insert a game into the hash table
 // Returns 1 if successful, 0 if failed
-int insert_game(hash_table_t *table, game_t *game);
+bool insert_game(hash_table_t *table, game_t *game); //done
 
 // Find a game in the hash table by title
 // #include <ctype.h>   /* For tolower */ set find game to effectively ignore case
 // Returns the game if found, NULL if not found  // use strcmp(), strstr() for string in  a string, strcasestr() (ignores case)
-game_t *find_game(hash_table_t *table, const char *title);
+game_t *find_game(hash_table_t *table, const char *title); // done for exact match only to start
 
 // Remove a game from the hash table by title
 // Returns the removed game if found, NULL if not found

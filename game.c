@@ -28,14 +28,14 @@ static const char *platform_strings[] = { // for displaying enums. UPDATE WITH E
 game_t *create_game(char *title, genre_t genre, platform_t platform){ //creates new game, returns pointer to game
     game_t *new_game = malloc(sizeof(game_t)); // allocate mem for new game
     if(new_game == NULL){ //error protection
-        fprintf(stderr, "Failed to allocate memory for new game in create_game()");
+        fprintf(stderr, "Failed to allocate memory for new game in create_game()\n");
         return NULL;
     }
     
     new_game->title = strdup(title);
     if (new_game->title == NULL) { // safety incase strdup() fails
         free(new_game);
-        fprintf(stderr,"failed to register title in create_game()");
+        fprintf(stderr,"failed to register title in create_game()\n");
         return NULL;
     }
 
