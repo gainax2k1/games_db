@@ -33,7 +33,7 @@ game_t *find_game(hash_table_t *table, const char *title); // done for exact mat
 
 // Remove a game from the hash table by title
 // Returns the removed game if found, NULL if not found
-game_t *remove_game(hash_table_t *table, const char *title);
+bool *remove_game(hash_table_t *table, const char *title);
 
 // Free all memory associated with the hash table
 // Note: This also frees all games in the table free game, then node, then bucket, then hash.

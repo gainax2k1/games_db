@@ -80,7 +80,8 @@ bool insert_game(hash_table_t *table, game_t *game){ // insert game into hash, r
 }
 
 game_t *find_game(hash_table_t *table, const char *title){ // find game, eventually ignoring case, currently returning full match only
-    // strcasestr(haystack, needle); 
+    // strcasestr(haystack, needle);  //just keeping here for reference later
+    
     if(table == NULL || title == NULL){ // safety check
         fprintf(stderr, "invalid table or title sent to find_game()\n");
         return NULL;
@@ -103,6 +104,62 @@ game_t *find_game(hash_table_t *table, const char *title){ // find game, eventua
         return NULL; // traversed through LL, no exact match found
     }
 }
+
+bool *remove_game(hash_table_t *table, const char *title){ //removes game, if found 1= succes, 0 = fail
+    if(table == NULL || title == NULL){ // safety check
+        fprintf(stderr, "invalid table or title sent to remove_game()\n");
+        return NULL;
+    }
+    
+    size_t exact_match = hash(title, table);  // get's hash where game should be (exact match)
+
+    if(exact_match == NULL){ //case where game not found
+        return NULL;
+    }
+    
+    hash_node_t *ll_node = table->buckets[exact_match];
+    if(ll_node->next == NULL){ // case when match is only item in bucket
+        free_game(ll_node->game); // frees the game
+        free(ll_node); //frees the node
+        // may need to set table->buckets[exact_matc] = NULL ???
+        return true;
+    }
+    else{ 
+        hash_node_t *previous_node = ll_node; // creates follow node
+        do{
+            if(!strcmp(ll_node->game->title, title)){ // case where match is found
+                previous_node->next = ll_node->next;
+                free_game(ll_node->game); //frees the game
+                free(ll_node); // frees the node
+                return true; 
+            }
+            // ll_node wasn't exact match, going to next node in LL, tracking the previous node
+            previous_node = ll_node;
+            ll_node = ll_node->next;
+            // might need some cajiggering here, but this is the concept
+        }while(ll_node != NULL);  //
+
+        return false; //at this point, there was no exact match found to remove
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
