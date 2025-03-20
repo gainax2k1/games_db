@@ -58,16 +58,21 @@ bool insert_game(hash_table_t *table, game_t *game){ // insert game into hash, r
         fprintf(stderr, "failed to allocate memory for new node in insert_game()\n");
         return 0;
     }
-
+    
     // initiallizing values for new node
     new_game->game = game;  
     new_game->next = NULL; 
+
+
+    // need to add case for when title already exists
+    // do we return fail, or do we add duplicate?
 
     size_t game_index = hash(game->title, table->size);
     hash_node_t *ll_node = table->buckets[game_index]; //for traversing the LL at that bucket's index
 
     if(ll_node == NULL){ //case of empty index
         ll_node = new_game;
+        table->count++;
         return 1;
     } 
     else{ // case LL already started at index
@@ -75,6 +80,7 @@ bool insert_game(hash_table_t *table, game_t *game){ // insert game into hash, r
             ll_node = ll_node->next;
         }
         ll_node->next = new_game; //new_game added to LL
+        table->count++;
         return 1;
     }
 }
@@ -145,16 +151,95 @@ bool *remove_game(hash_table_t *table, const char *title){ //removes game, if fo
 }
 
 
+// Note: This also frees all games in the table free game, then node, then bucket, then hash.
+void free_table(hash_table_t *table){
+    if(table == NULL){ //safety check
+        fprintf(stderr, "Invalid table sent to free_table()\n");
+        return;
+    }
+    
+    for(size_t i = 0; i < table->size; i++){
+        if(table->buckets[i] == NULL){
+            // do i need to free(table->buckets[i]) here???
+            continue; // empty bucket, move on to next
+        }
+        else{
+            hash_node_t *ll_node = table->buckets[i]; //grab first node in LL
+            hash_node_t *ll_next_node = ll_node->next; //grabs next node in LL before freeing current node
+                
+            do{
+                ll_next_node = ll_node->next;                    
+                    
+                free_game(ll_node->game); // frees game portion of node
+                free(ll_node); // frees node iteslf.
+
+                ll_node = ll_next_node; // move on to next node
+                
+
+            } while(ll_node != NULL);
+        }
+        free(table->buckets[i]; // i think this covers all contingencies??
+            
+    }
+    free(table->buckets); //may be unnceccesary
+    free(table); // free the table itself
+
+    return;  // might change function to bool to return success/fail condition
+}
 
 
+void print_table(hash_table_t *table){ //initially in traversal order
+    if(table == NULL){
+        fprintf(stderr, "Invalid table sent to print_table()\n");
+        return;
+    }
+    
+    game_t *list = get_games_list(table); // might need tuning ???
+    
+    if(list == NULL){
+        fprintf(stderr, "Failed to retrieve list of games from get_games_list()\n");
+        return;
+    }
 
+    for(size_t i = 0; i < table->count; i++){
+        game_t *current_game = list[i];
+        
+        printf("[%zu] Title: %s, Genre: %s, Platform: %s\n", i, current_game->title, current_game->genre, current_game->platform);
+    
+    }
 
+    free(list); // might need to free each element individually ???
+    
+    return;
+}
 
-
-
-
-
-
+game_t *get_games_list(hash_table_t *table){ // traverses the hash, storing games in array to return
+    if(table == NULL){ //safety
+        fprintf(stderr, "Invalid table sent to get_games_list()\n";
+        return NULL;
+    }
+    
+    game_t *games_list = (game_t*) calloc (table->count, sizeof(game)); //allocates memory for array to hold games.
+    size_t current_index = 0; // for storying games in array
+    
+    for(size_t i = 0; i < table->size; i++){
+            if(table->buckets[i] == NULL){
+                continue; // empty bucket, move on to next
+            }
+            else{
+                hash_node_t *ll_node = table->buckets[i]; //grab first node in LL
+                    
+                do{  
+                    games_list[current_index] = ll_node->game;
+                    current_index++;
+                    
+                    ll_node = ll_node->next; // move on to next node
+    
+                } while(ll_node != NULL);
+            }                
+        }
+    return games_list; //
+}
 
 
 

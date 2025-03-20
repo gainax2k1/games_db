@@ -33,13 +33,15 @@ game_t *find_game(hash_table_t *table, const char *title); // done for exact mat
 
 // Remove a game from the hash table by title
 // Returns the removed game if found, NULL if not found
-bool *remove_game(hash_table_t *table, const char *title);
+bool *remove_game(hash_table_t *table, const char *title); //done for now
 
 // Free all memory associated with the hash table
 // Note: This also frees all games in the table free game, then node, then bucket, then hash.
-void free_table(hash_table_t *table);
+void free_table(hash_table_t *table) // done for noww;
 
 // Print all games in the hash table 
 // initally, will be in "random" order, eventually store into temporary array, than use various
 // sorts for however i wish to display it. also, probably some way to stop listing as screen fills up?
-void print_table(hash_table_t *table);
+// uses helper function get_games_list(table_t* table) to get an array of the games, usorted.
+
+void print_table(hash_table_t *table); //done for now
