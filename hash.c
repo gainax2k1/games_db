@@ -6,10 +6,10 @@
 #include "hash.h"
 #include "game.h"
 
-hash_table_t *create_table(size_t size){ // creating the hash
+hash_table_t *create_table(size_t size) { // creating the hash
     hash_table_t *new_hash_table = (hash_table_t*) malloc (sizeof(hash_table_t));
     if(new_hash_table == NULL){ //safety check
-        fprtintf(stderr, "failed to allocate memory for hash table in create_table()\n");
+        fprintf(stderr, "failed to allocate memory for hash table in create_table()\n");
         return NULL; 
     }
 
@@ -22,7 +22,7 @@ hash_table_t *create_table(size_t size){ // creating the hash
     
     new_hash_table->count = 0;
     new_hash_table->size = size;
-    new_hash_table->buckets = new_buckets;
+    new_hash_table->buckets = new_buckets; //possible wrong pointer type?
 
     return new_hash_table;
 }
@@ -46,7 +46,7 @@ size_t hash(const char *str, hash_table_t *table) { // djb2 algorithm for hashin
     return hash % table->size; 
 }
 
-bool insert_game(hash_table_t *table, game_t *game){ // insert game into hash, return 0 if failed, 1 if success
+bool insert_game(hash_table_t *table, game_t *game) { // insert game into hash, return 0 if failed, 1 if success
     if(table == NULL || game == NULL){ //safety check
         fprintf(stderr, "invalid values sent to insert_game()\n");
         return 0;
@@ -85,7 +85,7 @@ bool insert_game(hash_table_t *table, game_t *game){ // insert game into hash, r
     }
 }
 
-game_t *find_game(hash_table_t *table, const char *title){ // find game, eventually ignoring case, currently returning full match only
+game_t *find_game(hash_table_t *table, const char *title) { // find game, eventually ignoring case, currently returning full match only
     // strcasestr(haystack, needle);  //just keeping here for reference later
     
     if(table == NULL || title == NULL){ // safety check
@@ -95,7 +95,7 @@ game_t *find_game(hash_table_t *table, const char *title){ // find game, eventua
 
     size_t exact_match = hash(title, table); 
 
-    if(exact_match == NULL){ //case where game not found
+    if(table->buckets[exact_match] == NULL){ //case where game not found
         return NULL;
     }
     else{
@@ -111,7 +111,7 @@ game_t *find_game(hash_table_t *table, const char *title){ // find game, eventua
     }
 }
 
-bool *remove_game(hash_table_t *table, const char *title){ //removes game, if found 1= succes, 0 = fail
+bool remove_game(hash_table_t *table, const char *title) { //removes game, if found 1= succes, 0 = fail
     if(table == NULL || title == NULL){ // safety check
         fprintf(stderr, "invalid table or title sent to remove_game()\n");
         return NULL;
@@ -119,7 +119,7 @@ bool *remove_game(hash_table_t *table, const char *title){ //removes game, if fo
     
     size_t exact_match = hash(title, table);  // get's hash where game should be (exact match)
 
-    if(exact_match == NULL){ //case where game not found
+    if(table->buckets[exact_match] == NULL){ //case where game not found
         return NULL;
     }
     
@@ -152,7 +152,7 @@ bool *remove_game(hash_table_t *table, const char *title){ //removes game, if fo
 
 
 // Note: This also frees all games in the table free game, then node, then bucket, then hash.
-void free_table(hash_table_t *table){
+void free_table(hash_table_t *table) {
     if(table == NULL){ //safety check
         fprintf(stderr, "Invalid table sent to free_table()\n");
         return;
@@ -178,7 +178,7 @@ void free_table(hash_table_t *table){
 
             } while(ll_node != NULL);
         }
-        free(table->buckets[i]; // i think this covers all contingencies??
+        free(table->buckets[i]); // i think this covers all contingencies??
             
     }
     free(table->buckets); //may be unnceccesary
@@ -187,8 +187,36 @@ void free_table(hash_table_t *table){
     return;  // might change function to bool to return success/fail condition
 }
 
+game_t *get_games_list(hash_table_t *table) { // traverses the hash, storing games in array to return
+    if(table == NULL){ //safety
+        fprintf(stderr, "Invalid table sent to get_games_list()\n");
+        return NULL;
+    }
+    
+    game_t *games_list = (game_t*) calloc (table->count, sizeof(game_t)); //allocates memory for array to hold games.
+    size_t current_index = 0; // for storying games in array
+    
+    for(size_t i = 0; i < table->size; i++){
+            if(table->buckets[i] == NULL){
+                continue; // empty bucket, move on to next
+            }
+            else{
+                hash_node_t *ll_node = table->buckets[i]; //grab first node in LL
+                    
+                do{  
+                    games_list[current_index] = *ll_node->game;
+                    current_index++;
+                    
+                    ll_node = ll_node->next; // move on to next node
+    
+                } while(ll_node != NULL);
+            }                
+        }
+    return games_list; //
+}
 
-void print_table(hash_table_t *table){ //initially in traversal order
+
+void print_table(hash_table_t *table) { //initially in traversal order
     if(table == NULL){
         fprintf(stderr, "Invalid table sent to print_table()\n");
         return;
@@ -202,9 +230,9 @@ void print_table(hash_table_t *table){ //initially in traversal order
     }
 
     for(size_t i = 0; i < table->count; i++){
-        game_t *current_game = list[i];
+        game_t current_game = list[i];
         
-        printf("[%zu] Title: %s, Genre: %s, Platform: %s\n", i, current_game->title, current_game->genre, current_game->platform);
+        printf("[%zu] Title: %s, Genre: %s, Platform: %s\n", i, current_game.title, current_game.genre, current_game.platform);
     
     }
 
@@ -213,33 +241,7 @@ void print_table(hash_table_t *table){ //initially in traversal order
     return;
 }
 
-game_t *get_games_list(hash_table_t *table){ // traverses the hash, storing games in array to return
-    if(table == NULL){ //safety
-        fprintf(stderr, "Invalid table sent to get_games_list()\n";
-        return NULL;
-    }
-    
-    game_t *games_list = (game_t*) calloc (table->count, sizeof(game)); //allocates memory for array to hold games.
-    size_t current_index = 0; // for storying games in array
-    
-    for(size_t i = 0; i < table->size; i++){
-            if(table->buckets[i] == NULL){
-                continue; // empty bucket, move on to next
-            }
-            else{
-                hash_node_t *ll_node = table->buckets[i]; //grab first node in LL
-                    
-                do{  
-                    games_list[current_index] = ll_node->game;
-                    current_index++;
-                    
-                    ll_node = ll_node->next; // move on to next node
-    
-                } while(ll_node != NULL);
-            }                
-        }
-    return games_list; //
-}
+
 
 
 
