@@ -45,3 +45,15 @@ void free_table(hash_table_t *table); // done for noww;
 // uses helper function get_games_list(table_t* table) to get an array of the games, usorted.
 
 void print_table(hash_table_t *table); //done for now
+
+
+
+/* TO-DO:
+
+1) Grow/shrink hash. double at .75 utilization, half at .2 utilization are goals
+2) Add options to print table, as sort table functions (by title, genre, etc)
+3) Disk i/o: save db to disk. JSON? CSV? TBD
+4) Add user i/o: adding, removing, finding, etc...
+
+
+*/
