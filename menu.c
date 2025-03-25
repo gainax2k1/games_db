@@ -26,3 +26,8 @@ void show_menu(menu_t *men){ // displays formatted menu
     }
     return;
 }
+
+void free_menu(menu_t *men){
+    free(men);
+    return;
+} 

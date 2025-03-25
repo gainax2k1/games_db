@@ -45,10 +45,7 @@ game_t *create_game(char *title, genre_t genre, platform_t platform){ //creates 
 }
 
 void show_game(game_t *game){// displays formatted game info
-    printf("Title: %s \n", game->title);
-    printf("Genre: %s \n", genre_strings[game->genre]);
-    printf("Platform: %s \n", platform_strings[game->platform]);
-
+    printf("Title: %s Genre: %s Platform: %s \n", game->title, genre_strings[game->genre], platform_strings[game->platform]);
     return;
 }
 

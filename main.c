@@ -29,18 +29,46 @@ void main(){
 
     printf("creating game!\n");
     game_t *test_game = create_game("Zelda", GENRE_RPG, PLATFORM_SNES);
+    printf("creating game!\n");
+    game_t *test_game2 = create_game("Final Fantasy II", GENRE_RPG, PLATFORM_SNES);
+    printf("creating game!\n");
+    game_t *test_game3 = create_game("Tetris", GENRE_PUZZLE, PLATFORM_NES);
+    printf("creating game!\n");
+    game_t *test_game4 = create_game("Viewtiful Joe", GENRE_PLATFORMER, PLATFORM_GC);
+    printf("creating game!\n");
+    game_t *test_game5 = create_game("Mario 64", GENRE_PLATFORMER, PLATFORM_N64);
+    printf("creating game!\n");
 
-    printf("creating hash!\n");
     hash_table_t *test_table = create_table(10);
 
     printf("adding game to hash!\n");
     if(insert_game(test_table, test_game)){
         printf("game insert worked!\n");
         }
-
+    printf("adding game to hash!\n");
+    if(insert_game(test_table, test_game2)){
+        printf("game insert worked!\n");
+        }
+    if(insert_game(test_table, test_game3)){
+        printf("game insert worked!\n");
+        }
+    if(insert_game(test_table, test_game4)){
+        printf("game insert worked!\n");
+        }
+    if(insert_game(test_table, test_game5)){
+        printf("game insert worked!\n");
+        }
+        
     printf("printing hash!\n");
     print_table(test_table);
 
+    bool remove_worked = remove_game(test_table, "Mario 64");
+    printf("remove worked? %s\n", remove_worked ? "true" : "false");
 
+    print_table(test_table);
+    free_table(test_table);
+    free_menu(main_menu);
+  
+    printf("seemingly successfully freed table\n");
     return;
 }

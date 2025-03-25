@@ -8,3 +8,4 @@ typedef struct Menu {
 
 menu_t *create_menu(char **menu_items, size_t num_menu_items); // new menu accepts an array of options, returns pointer to menu
 void show_menu(menu_t *men); // displays formatted menu
+void free_menu(menu_t *men); // frees memory for menu
