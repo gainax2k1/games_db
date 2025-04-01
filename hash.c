@@ -53,6 +53,11 @@ bool insert_game(hash_table_t *table, game_t *game) { // insert game into hash, 
     }
     printf("successfully entered insert_game()\n");
 
+    if((table->count / table->size) >= .7){
+        printf("RESIZING THE HIZASH!!!\n");
+        resize_hash(table);
+    }
+
     hash_node_t *new_game = (hash_node_t*) malloc (sizeof(hash_node_t));
 
     if(new_game == NULL){ // safety check
@@ -241,6 +246,7 @@ void free_table(hash_table_t *table) {
     return;  // might change function to bool to return success/fail condition
 }
 
+
 game_t **get_games_list(hash_table_t *table) { // traverses the hash, storing games in array to return
     if(table == NULL){ //safety
         fprintf(stderr, "Invalid table sent to get_games_list()\n");
@@ -277,7 +283,7 @@ game_t **get_games_list(hash_table_t *table) { // traverses the hash, storing ga
     return games_list; //
 }
 
-// *** THIS IS WHERE THINGS STOP WORKING ****
+
 void print_table(hash_table_t *table) { //initially in traversal order
     if(table == NULL){
         fprintf(stderr, "Invalid table sent to print_table()\n");
@@ -286,7 +292,7 @@ void print_table(hash_table_t *table) { //initially in traversal order
     printf("successfullly entered print_table()\n");
 
 
-    game_t **games_list = get_games_list(table); // might need tuning ???
+    game_t **games_list = get_games_list(table); // get's the games list from the hash, don't forget to free it.
     
 
     if(games_list == NULL){
@@ -301,8 +307,45 @@ void print_table(hash_table_t *table) { //initially in traversal order
     
     }
 
-    free(games_list); // might need to free each element individually ???
+    free(games_list); //remembering to free the games_list
     
+    return;
+}
+
+
+void resize_hash(hash_table_t *ht) {
+    game_t** games_array = get_games_list(ht); // getting the list of old gamess
+    size_t glist_count = ht->count; // index size for games list
+    size_t old_size = ht->size; // storing old size
+    hash_node_t** old_buckets = ht->buckets; // Save old buckets to free later
+ 
+    // Create a new empty hash table with larger size
+    size_t new_size = old_size * 2;
+    hash_node_t** new_buckets = calloc(new_size, sizeof(hash_node_t*));
+
+    // Update hash table with new buckets and size
+    ht->buckets = new_buckets;
+    ht->size = new_size;
+    ht->count = 0;  // Will be incremented as we add games back
+
+    // Reinsert all games into the new, larger hash table
+    for (size_t i = 0; i < glist_count; i++) {
+        insert_game(ht, games_array[i]);
+    }
+
+
+    // First, free all the linked list nodes
+    for (size_t i = 0; i < old_size; i++) {
+        hash_node_t* current = old_buckets[i];
+        while (current != NULL) {
+            hash_node_t* next = current->next;
+            free(current);  // Just free the node, not the game it points to
+            current = next;
+        }
+    }
+    free(games_array); // DON'T FORGET THIS, you silly billy!
+    free(old_buckets);
+
     return;
 }
 

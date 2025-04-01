@@ -19,8 +19,10 @@ menu_t *create_menu(char **menu_items, size_t num_menu_items){ // new menu accep
 void show_menu(menu_t *men){ // displays formatted menu
     if(men == NULL){ //safety check
         fprintf(stderr, "invalid menu in show_menu\n");
+        return; // Return immediately if menu is invalid
     }
-    printf("%zu is menusize \n", men->menu_size);
+    printf("%zu is menusize \n", men->menu_size); // debugging msg
+    printf("Select an option:\n"); // formal header
     for(size_t i = 0; i < men->menu_size; i++){
         printf("[%zu] %s \n", i, men->menu_items[i]);
     }

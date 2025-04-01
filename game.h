@@ -22,6 +22,15 @@ typedef enum Platform{ // more to be added, starting with Nintendo only
     PLATFORM_SWITCH,
 } platform_t;
 
+const char* genre_to_string(genre_t genre);
+const char* platform_to_string(platform_t platform);
+
+// Convert string to genre enum
+genre_t string_to_genre(const char *genre_str);
+
+// Convert string to platform enum
+platform_t string_to_platform(const char *platform_str);
+
 typedef struct Game {
     genre_t genre;
     platform_t platform;
