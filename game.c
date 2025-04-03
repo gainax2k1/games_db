@@ -25,6 +25,20 @@ static const char *platform_strings[] = { // for displaying enums. UPDATE WITH E
     "Switch"
 };
 
+void show_genres(){
+    for (int i = 0; i < sizeof(genre_strings) / sizeof(genre_strings[0]); i++) {
+        printf("[%u] %s\n", i, genre_strings[i]);
+    }
+}
+    
+
+void show_platforms(){
+    for (int i = 0; i < sizeof(platform_strings) / sizeof(platform_strings[0]); i++) {
+        printf("[%u] %s\n", i, platform_strings[i]);
+    }
+}
+
+
 const char* genre_to_string(genre_t genre) {
     return genre_strings[genre];
 }
@@ -73,7 +87,7 @@ game_t *create_game(char *title, genre_t genre, platform_t platform){ //creates 
 }
 
 void show_game(game_t *game){// displays formatted game info
-    printf("Title: %s Genre: %s Platform: %s \n", game->title, genre_strings[game->genre], platform_strings[game->platform]);
+    printf("Title: %-35.35s Genre: %-12s Platform: %-12s \n", game->title, genre_strings[game->genre], platform_strings[game->platform]);
     return;
 }
 

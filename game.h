@@ -25,6 +25,12 @@ typedef enum Platform{ // more to be added, starting with Nintendo only
 const char* genre_to_string(genre_t genre);
 const char* platform_to_string(platform_t platform);
 
+// displays enumerated list of genres
+void show_genres();
+
+// displays enumerated list of platforms
+void show_platforms();
+
 // Convert string to genre enum
 genre_t string_to_genre(const char *genre_str);
 
