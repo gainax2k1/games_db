@@ -29,11 +29,11 @@ bool insert_game(hash_table_t *table, game_t *game); //done
 // Find a game in the hash table by title
 // #include <ctype.h>   /* For tolower */ set find game to effectively ignore case
 // Returns the game if found, NULL if not found  // use strcmp(), strstr() for string in  a string, strcasestr() (ignores case)
-game_t *find_game(hash_table_t *table, const char *title); // done for exact match only to start
+game_t *find_game(hash_table_t *table, char *title); // done for exact match only to start
 
 // Remove a game from the hash table by title
 // Returns the removed game if found, NULL if not found
-bool remove_game(hash_table_t *table, const char *title); //done for now
+bool remove_game(hash_table_t *table, char *title); //done for now
 
 // Free all memory associated with the hash table
 // Note: This also frees all games in the table free game, then node, then bucket, then hash.

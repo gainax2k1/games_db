@@ -26,16 +26,26 @@ static const char *platform_strings[] = { // for displaying enums. UPDATE WITH E
 };
 
 void show_genres(){
+    printf("----- Genres -----\n");
     for (int i = 0; i < sizeof(genre_strings) / sizeof(genre_strings[0]); i++) {
-        printf("[%u] %s\n", i, genre_strings[i]);
+        printf("[%u] %-12s", i, genre_strings[i]);
+        if((i+1)%5 == 0) {
+            printf("\n");
+        }
     }
+    printf("\n----------\n");
 }
     
 
 void show_platforms(){
+    printf("----- Platforms -----\n");
     for (int i = 0; i < sizeof(platform_strings) / sizeof(platform_strings[0]); i++) {
-        printf("[%u] %s\n", i, platform_strings[i]);
+        printf("[%u] %-12s", i, platform_strings[i]);
+        if((i+1)%5 == 0) {
+                printf("\n");
+        }
     }
+    printf("\n----------\n");
 }
 
 

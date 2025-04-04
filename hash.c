@@ -51,7 +51,6 @@ bool insert_game(hash_table_t *table, game_t *game) { // insert game into hash, 
         fprintf(stderr, "invalid values sent to insert_game()\n");
         return 0;
     }
-    printf("successfully entered insert_game()\n");
 
     if((table->count / table->size) >= .7){
         printf("RESIZING THE HIZASH!!!\n");
@@ -64,13 +63,11 @@ bool insert_game(hash_table_t *table, game_t *game) { // insert game into hash, 
         fprintf(stderr, "failed to allocate memory for new node in insert_game()\n");
         return 0;
     }
-    printf("successfully created node for new game\n");
 
     // initiallizing values for new node
     new_game->game = game;  
     new_game->next = NULL; 
 
-    printf("successfully initialized values for new node\n");
 
     // need to add case for when title already exists
     // do we return fail, or do we add duplicate?
@@ -103,7 +100,7 @@ bool insert_game(hash_table_t *table, game_t *game) { // insert game into hash, 
     }
 }
 
-game_t *find_game(hash_table_t *table, const char *title) { // find game, eventually ignoring case, currently returning full match only
+game_t *find_game(hash_table_t *table, char *title) { // find game, eventually ignoring case, currently returning full match only
     // strcasestr(haystack, needle);  //just keeping here for reference later
     
     if(table == NULL || title == NULL){ // safety check
@@ -134,14 +131,12 @@ void free_node(hash_node_t *node){ // helper function for freeing nodes
     free(node);
 }
 
-bool remove_game(hash_table_t *table, const char *title) { //removes game, if found 1= succes, 0 = fail
+bool remove_game(hash_table_t *table, char *title) { //removes game, if found 1= succes, 0 = fail
     if(table == NULL || title == NULL){ // safety check
         fprintf(stderr, "invalid table or title sent to remove_game()\n");
         return false;
     }
-    printf("Attempting to remove game with title: %s\n", title);
     size_t exact_match = hash(title, table);  // get's hash where game should be (exact match)
-    printf("Hash index determined: %zu\n", exact_match);
 
     if(table->buckets[exact_match] == NULL){ //case where game not found
         return false;
@@ -178,34 +173,7 @@ bool remove_game(hash_table_t *table, const char *title) { //removes game, if fo
         ll_node = ll_node->next;
     }
 
-    /* my first implementation
-    if(!strcmp(ll_node->game->title, title) && ll_node->next == NULL){ // case when match is only item in bucket
-        free_game(ll_node->game); // frees the game
-        free(ll_node); //frees the node
-        table->buckets[exact_match] = NULL; // nullify the bucket pointer
-        return true;
-    }
-    if(!strcmp(ll_node->game->title, title)){ //case where game is first in the LL
-        table->buckets[exact_match] = ll_node->next;
-        free_game(ll_node->game); //frees the game
-        free(ll_node); // frees the node
-        return true;
-    }
 
-    hash_node_t *previous_node = ll_node; // creates follow node
-    do{
-        if(!strcmp(ll_node->game->title, title)){ // case where match is found
-            previous_node->next = ll_node->next;
-            free_game(ll_node->game); //frees the game
-            free(ll_node); // frees the node
-            return true; 
-        }
-        // ll_node wasn't exact match, going to next node in LL, tracking the previous node
-        previous_node = ll_node;
-        ll_node = ll_node->next;
-        // might need some cajiggering here, but this is the concept
-    }while(ll_node != NULL);  //
-    */
 
     return false; //at this point, there was no exact match found to remove
 }
@@ -232,9 +200,6 @@ void free_table(hash_table_t *table) {
                 free_node(ll_node);
 
                 ll_node = ll_next_node; // move on to next node
-                if (ll_node == NULL) {
-                    printf("Reached end of linked list in bucket %zu\n", i);
-                }
 
             } 
         }
@@ -252,8 +217,6 @@ game_t **get_games_list(hash_table_t *table) { // traverses the hash, storing ga
         fprintf(stderr, "Invalid table sent to get_games_list()\n");
         return NULL;
     }
-    
-    printf("successfully entered get_games_list()\n");
 
     game_t **games_list = (game_t**) calloc (table->count, sizeof(game_t*)); //allocates memory for array to hold games.
     if (games_list == NULL) { // safety
@@ -289,8 +252,6 @@ void print_table(hash_table_t *table) { //initially in traversal order
         fprintf(stderr, "Invalid table sent to print_table()\n");
         return;
     }
-    printf("successfullly entered print_table()\n");
-
 
     game_t **games_list = get_games_list(table); // get's the games list from the hash, don't forget to free it.
     

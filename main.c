@@ -34,12 +34,23 @@ void main(){
 
     
     printf("\n----- GAME DATABASE -----\n"); // Simple header for initial home menu
-    
+    show_platforms(); //testing func
+    show_genres(); // testing func
 
+printf("\033[31mThis text is red\033[0m");
+printf("\033[32mThis text is green\033[0m");
+printf("\033[1;34mThis text is bold blue\033[0m");
+    
     // ***** beginning live menu here *********
     bool running = true;
     int menu_choice;
+                    
+    char title[100]; // for reading in new game title
+    int platform;
+    int genre; // for genre/ platform.
 
+    char confirm[10];
+    
     while(running) {
         show_menu(main_menu);
         printf("Enter your choice (0-%zu): ", num_menu_items - 1);
@@ -60,27 +71,28 @@ void main(){
         }
 
         switch(menu_choice) {
+            
             case 0: // List games
                 print_table(game_db);
                 break;
             
             case 1: // Add videogame
-                /*
-                char title[100]; // for reading in new game title
-                int genre, platform; // for genre/ platform.
+
                 
                 printf("Enter game title: ");
                 fgets(title, sizeof(title), stdin);
                 title[strcspn(title, "\n")] = 0; // Remove newline
-
-                printf("Enter genre (0-RPG, 1-ACTION, 2-PLATFORMER, etc.): ");
+                
+                show_genres();
+                printf("Enter number for genre (0-Unknown, 1-RPG, etc.): ");
                 scanf("%d", &genre);
                 while(getchar() != '\n'); // Clear buffer
 
-                printf("Enter platform (0-NES, 1-SNES, 2-N64, etc.): ");
+                show_platforms();
+                printf("Enter number platform (0-Unknwon, 1-NES, etc.): ");
                 scanf("%d", &platform);
                 while(getchar() != '\n'); // Clear buffer
-
+                
                 game_t *new_game = create_game(title, genre, platform);
                 if(new_game && insert_game(game_db, new_game)) {
                     printf("Added game: %s\n", title);
@@ -88,7 +100,7 @@ void main(){
                     printf("Failed to add game.\n");
                     if(new_game) free(new_game);
                 
-                */
+                
                 break;
 ;
             
@@ -115,9 +127,30 @@ void main(){
                 */
                 break;
             
-            case 3: // Remove game
-                
+            case 3:{ // Remove game
+                printf("Enter title of game to remove: ");
+                fgets(title, sizeof(title), stdin);
+                title[strcspn(title, "\n")] = 0;
+
+                game_t *game_to_remove = find_game(game_db, title);
+                if(game_to_remove) {
+                    printf("Found: %s (Genre: %d, Platform: %d)\n", 
+                          game_to_remove->title, game_to_remove->genre, game_to_remove->platform);
+                    
+                    printf("Enter 'REMOVE' to remove (anything else will return to main menu): ");
+                    scanf("%9s", &confirm);
+                    while(getchar() != '\n');
+                    printf("%d\n", (strcmp(confirm, "REMOVE")));
+                    if(strcmp(confirm, "REMOVE") == 0 ){ 
+                        remove_game(game_db, game_to_remove->title);
+                        break;
+                    }
+                    printf("Remove game cancelled\n");
+                    break;
+                }
+                printf("Game '%s' not found.\n", title);
                 break;
+            }
 
             case 4: // save and exit program
                 running = false;
@@ -130,7 +163,7 @@ void main(){
             }
         }
     
-    
+    }
     
 
     // i believe it's always safe to free at the end?
@@ -140,3 +173,33 @@ void main(){
     printf("seemingly successfully freed table\n");
     return;
 }
+
+
+
+
+
+
+
+
+
+/* To add color?
+printf("\033[31mThis text is red\033[0m");
+printf("\033[32mThis text is green\033[0m");
+printf("\033[1;34mThis text is bold blue\033[0m");
+
+ or....
+
+
+// At the top of your file:
+#define COLOR_RED "\033[31m"
+#define COLOR_GREEN "\033[32m"
+#define COLOR_YELLOW "\033[33m"
+#define COLOR_BLUE "\033[34m"
+#define COLOR_RESET "\033[0m"
+
+// Then use like:
+printf("%sWelcome to Game Database!%s\n", COLOR_BLUE, COLOR_RESET);
+printf("%sError: Game not found%s\n", COLOR_RED, COLOR_RESET);
+
+
+*/
