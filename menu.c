@@ -4,6 +4,9 @@
 #include <string.h>
 
 #include "menu.h"
+#include "colors.h"
+
+
 
 menu_t *create_menu(char **menu_items, size_t num_menu_items){ // new menu accepts an array of options, returns pointer to menu
     menu_t *new_menu = (menu_t*) malloc(sizeof(menu_t)); // creating the new menu_t
@@ -21,10 +24,10 @@ void show_menu(menu_t *men){ // displays formatted menu
         fprintf(stderr, "invalid menu in show_menu\n");
         return; // Return immediately if menu is invalid
     }
-    printf("%zu is menusize \n", men->menu_size); // debugging msg
-    printf("Select an option:\n"); // formal header
+    // printf("%zu is menusize \n", men->menu_size); // debugging msg
+    
     for(size_t i = 0; i < men->menu_size; i++){
-        printf("[%zu] %s \n", i, men->menu_items[i]);
+        printf("[%s%zu%s] %s \n", STYLE_BOLD, i, STYLE_RESET, men->menu_items[i]);
     }
     return;
 }

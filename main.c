@@ -5,7 +5,7 @@
 #include "game.h"
 #include "hash.h"
 #include "fileio.h"
-
+#include "colors.h"
 
 void main(){
 
@@ -33,14 +33,8 @@ void main(){
     menu_t *main_menu = create_menu(main_menu_opts, num_menu_items);
 
     
-    printf("\n----- GAME DATABASE -----\n"); // Simple header for initial home menu
-    show_platforms(); //testing func
-    show_genres(); // testing func
+    printf("\n-----%s GAME DATABASE %s-----\n", STYLE_INVERSE, STYLE_RESET); // Simple header for initial home menu
 
-printf("\033[31mThis text is red\033[0m");
-printf("\033[32mThis text is green\033[0m");
-printf("\033[1;34mThis text is bold blue\033[0m");
-    
     // ***** beginning live menu here *********
     bool running = true;
     int menu_choice;
@@ -49,11 +43,12 @@ printf("\033[1;34mThis text is bold blue\033[0m");
     int platform;
     int genre; // for genre/ platform.
 
-    char confirm[10];
+    char confirm[16];
     
     while(running) {
+        printf("\n-------%s MAIN MENU %s-------\n", STYLE_BOLD, STYLE_RESET);
         show_menu(main_menu);
-        printf("Enter your choice (0-%zu): ", num_menu_items - 1);
+        printf("%sEnter your choice (0-%zu): %s", STYLE_BOLD, num_menu_items - 1, STYLE_RESET);
 
         if(scanf("%d", &menu_choice) != 1) {
             // Clear input buffer on invalid input
@@ -73,6 +68,7 @@ printf("\033[1;34mThis text is bold blue\033[0m");
         switch(menu_choice) {
             
             case 0: // List games
+                printf("\n"); // friendly blank line
                 print_table(game_db);
                 break;
             
@@ -137,8 +133,8 @@ printf("\033[1;34mThis text is bold blue\033[0m");
                     printf("Found: %s (Genre: %d, Platform: %d)\n", 
                           game_to_remove->title, game_to_remove->genre, game_to_remove->platform);
                     
-                    printf("Enter 'REMOVE' to remove (anything else will return to main menu): ");
-                    scanf("%9s", &confirm);
+                    printf("%sEnter 'REMOVE' to remove (anything else will return to main menu):%s ", COLOR_RED, COLOR_WHITE);
+                    scanf("%15s", confirm);
                     while(getchar() != '\n');
                     printf("%d\n", (strcmp(confirm, "REMOVE")));
                     if(strcmp(confirm, "REMOVE") == 0 ){ 
@@ -170,36 +166,6 @@ printf("\033[1;34mThis text is bold blue\033[0m");
     free_table(game_db);
     free_menu(main_menu);
   
-    printf("seemingly successfully freed table\n");
     return;
 }
 
-
-
-
-
-
-
-
-
-/* To add color?
-printf("\033[31mThis text is red\033[0m");
-printf("\033[32mThis text is green\033[0m");
-printf("\033[1;34mThis text is bold blue\033[0m");
-
- or....
-
-
-// At the top of your file:
-#define COLOR_RED "\033[31m"
-#define COLOR_GREEN "\033[32m"
-#define COLOR_YELLOW "\033[33m"
-#define COLOR_BLUE "\033[34m"
-#define COLOR_RESET "\033[0m"
-
-// Then use like:
-printf("%sWelcome to Game Database!%s\n", COLOR_BLUE, COLOR_RESET);
-printf("%sError: Game not found%s\n", COLOR_RED, COLOR_RESET);
-
-
-*/

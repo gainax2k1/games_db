@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "game.h"
+#include "colors.h"
 
 static const char *genre_strings[] = { // for displaying enums. UPDATE WITH ENUMS IN GAME.H!
     "Unknown",
@@ -11,7 +12,9 @@ static const char *genre_strings[] = { // for displaying enums. UPDATE WITH ENUM
     "Sports", 
     "Rogue-like", 
     "Music/Rythm", 
-    "Platformer"
+    "Platformer",
+    "FPS",
+    "Strategy"
 };
 
 static const char *platform_strings[] = { // for displaying enums. UPDATE WITH ENUMS IN GAME.H!
@@ -22,30 +25,53 @@ static const char *platform_strings[] = { // for displaying enums. UPDATE WITH E
     "GameCube", 
     "Wii", 
     "Wii U", 
-    "Switch"
+    "Switch",
+    "GameBoy",
+    "GameBoy Color",
+    "Virtual Boy",
+    "GameBoy Advance",
+    "DS",
+    "DSi",
+    "3DS",
+    "PlayStation 1",
+    "PlayStation 2",
+    "PlayStation 3",
+    "PlayStation 4",
+    "PlayStation 5",
+    "PS Portable",
+    "PS Vita",
+    "XBox",
+    "XBox 360",
+    "XBox ONE",
+    "XBox Series S/X",
+    "Genesis",
+    "SegaCD",
+    "32X",
+    "Saturn",
+    "Dreamcast"
 };
 
 void show_genres(){
-    printf("----- Genres -----\n");
+    printf("------- Genres -------\n");
     for (int i = 0; i < sizeof(genre_strings) / sizeof(genre_strings[0]); i++) {
         printf("[%u] %-12s", i, genre_strings[i]);
         if((i+1)%5 == 0) {
             printf("\n");
         }
     }
-    printf("\n----------\n");
+    printf("\n-----------------\n");
 }
     
 
 void show_platforms(){
     printf("----- Platforms -----\n");
     for (int i = 0; i < sizeof(platform_strings) / sizeof(platform_strings[0]); i++) {
-        printf("[%u] %-12s", i, platform_strings[i]);
+        printf("[%2d] %-18s", i, platform_strings[i]);
         if((i+1)%5 == 0) {
                 printf("\n");
         }
     }
-    printf("\n----------\n");
+    printf("\n------------------\n");
 }
 
 
@@ -97,7 +123,7 @@ game_t *create_game(char *title, genre_t genre, platform_t platform){ //creates 
 }
 
 void show_game(game_t *game){// displays formatted game info
-    printf("Title: %-35.35s Genre: %-12s Platform: %-12s \n", game->title, genre_strings[game->genre], platform_strings[game->platform]);
+    printf("%sTitle:%s  %-35.35s %sGenre:%s%s %-12s%s %sPlatform:%s%s %-12s %s \n", COLOR_BRIGHT_BLACK, COLOR_WHITE ,game->title, COLOR_BRIGHT_BLACK, COLOR_WHITE, get_genre_color(game->genre), genre_strings[game->genre], COLOR_WHITE, COLOR_BRIGHT_BLACK, COLOR_WHITE, get_platform_color(game->platform), platform_strings[game->platform], COLOR_WHITE);
     return;
 }
 

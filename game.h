@@ -9,6 +9,8 @@ typedef enum Genre { // genres, to be expanded manually as neccessary
     GENRE_ROGUE,
     GENRE_MUSIC,
     GENRE_PLATFORMER,
+    GENRE_FPS,
+    GENRE_STRAT,
 } genre_t;
 
 typedef enum Platform{ // more to be added, starting with Nintendo only
@@ -20,6 +22,30 @@ typedef enum Platform{ // more to be added, starting with Nintendo only
     PLATFORM_WII,
     PLATFORM_WIIU,
     PLATFORM_SWITCH,
+    PLATFORM_GB,
+    PLATFORM_GBC,
+    PLATFORM_VBOY,
+    PLATFORM_GBA,
+    PLATFORM_DS,
+    PLATFORM_DSI,
+    PLATFORM_3DS,
+    PLATFORM_PS1,
+    PLATFORM_PS2,
+    PLATFORM_PS3,
+    PLATFORM_PS4,
+    PLATFORM_PS5,
+    PLATFORM_PSP,
+    PLATFORM_VITA,
+    PLATFORM_XBOX,
+    PLATFORM_360,
+    PLATFORM_ONE,
+    PLATFORM_SERIES,
+    PLATFORM_GENESIS,
+    PLATFORM_SEGACD,
+    PLATFORM_32X,
+    PLATFORM_SATURN,
+    PLATFORM_DC,
+
 } platform_t;
 
 const char* genre_to_string(genre_t genre);

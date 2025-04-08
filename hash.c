@@ -5,6 +5,7 @@
 
 #include "hash.h"
 #include "game.h"
+#include "colors.h"
 
 hash_table_t *create_table(size_t size) { // creating the hash
     hash_table_t *new_hash_table = (hash_table_t*) malloc (sizeof(hash_table_t));
@@ -53,7 +54,7 @@ bool insert_game(hash_table_t *table, game_t *game) { // insert game into hash, 
     }
 
     if((table->count / table->size) >= .7){
-        printf("RESIZING THE HIZASH!!!\n");
+       // printf("RESIZING THE HIZASH!!!\n");  //debugging code
         resize_hash(table);
     }
 
@@ -74,7 +75,7 @@ bool insert_game(hash_table_t *table, game_t *game) { // insert game into hash, 
 
     size_t game_index = hash(game->title, table); // maybe should be pointer? type is matched for function, but perhaps should be pointer. but it's an index, so should be number...right?
 
-    printf("successfully got game_index from hash()\n");
+    // printf("successfully got game_index from hash()\n"); // debugging code
 
     hash_node_t *ll_node = table->buckets[game_index]; //for traversing the LL at that bucket's index
     if (game_index >= table->size) { //safety
@@ -83,7 +84,7 @@ bool insert_game(hash_table_t *table, game_t *game) { // insert game into hash, 
         return 0;
     }
 
-    printf("successfully  created ll_node pointer\n");
+    // printf("successfully  created ll_node pointer\n"); // debugging code
     
     if(ll_node == NULL){ //case of empty index
         table->buckets[game_index] = new_game;
@@ -146,7 +147,7 @@ bool remove_game(hash_table_t *table, char *title) { //removes game, if found 1=
 
   
     
-    printf("Checking bucket %zu...\n", exact_match);
+    // printf("Checking bucket %zu...\n", exact_match); //debugging code
 
 
      // Case 1: Match is the first node
@@ -234,7 +235,7 @@ game_t **get_games_list(hash_table_t *table) { // traverses the hash, storing ga
                 hash_node_t *ll_node = table->buckets[i]; //grab first node in LL
                     
                 do{ 
-                    printf("Adding game at index %zu\n", current_index); 
+                    // printf("Adding game at index %zu\n", current_index);  // debugging code
                     games_list[current_index] = ll_node->game;
                     current_index++;
                     
