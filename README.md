@@ -2,8 +2,8 @@ This is my first independent project for my boot.dev course. The goal is to crea
 This will include:
 - text based interface
 - adding/removing/editing games to the database
-- sorting by genre
-- searching by name or genre
+- sorting and searching by name
+- color coded genre and platform
 - saving to file (in .CSV)
 
 Future goals to potentially include:
