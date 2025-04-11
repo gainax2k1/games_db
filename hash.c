@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h> // used for tolower() in find....maybe? remove if unused
+#include <ctype.h> // used for tolower() in find at a later date? remove if unused
 
 #include "hash.h"
 #include "game.h"
@@ -247,6 +247,15 @@ game_t **get_games_list(hash_table_t *table) { // traverses the hash, storing ga
     return games_list; //
 }
 
+// Comparison function for strings for qsort() in print_table()
+int compare_games_by_title(const void *a, const void *b) {
+    // Cast the void pointers to game_t** (pointer to pointer to game)
+    game_t *game1 = *(game_t **)a;
+    game_t *game2 = *(game_t **)b;
+    
+    // Compare the titles
+    return strcmp(game1->title, game2->title);
+}
 
 void print_table(hash_table_t *table) { //initially in traversal order
     if(table == NULL){
@@ -261,7 +270,11 @@ void print_table(hash_table_t *table) { //initially in traversal order
         fprintf(stderr, "Failed to retrieve list of games from get_games_list()\n");
         return;
     }
-
+    // sorting by name using qsort() from stdlib.h *****************
+    // table->count is number of games
+    qsort(games_list, table->count, sizeof(game_t*), compare_games_by_title);
+    
+    
     for(size_t i = 0; i < table->count; i++){
         game_t *current_game = games_list[i];
         show_game(current_game);
