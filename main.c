@@ -7,7 +7,7 @@
 #include "fileio.h"
 #include "colors.h"
 
-void main(){
+int main(){
 
     char *main_menu_opts[] = {
         "List games",
@@ -113,7 +113,7 @@ void main(){
                 
                 
                 break;
-;
+
             
             case 2: // Edit videogame
                 
@@ -253,7 +253,7 @@ void main(){
     free_table(game_db);
     free_menu(main_menu);
     free_menu(edit_menu);
-  
-    return;
+
+    return 0;
 }
 
