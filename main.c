@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <csv.h>
+#include <csv.h> // sudo apt-get install libcsv-dev
 #include "menu.h"
 #include "game.h"
 #include "hash.h"
