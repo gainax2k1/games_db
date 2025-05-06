@@ -3,11 +3,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <csv.h>
+#include <csv.h> // sudo apt-get install libcsv-dev
 #include "hash.h"
 #include "game.h"
 
-// below is all boots
 
 
 // Structure to hold temporary field data during parsing

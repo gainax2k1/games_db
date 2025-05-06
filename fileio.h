@@ -5,7 +5,7 @@
 #include "hash.h"
 #include "game.h"
 
-// below is all boots NEEDS TO BE REWORKED!!!! treat as pseudocode
+
 
 // Structure to hold temporary field data during parsing
 typedef struct {
