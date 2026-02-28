@@ -102,12 +102,13 @@ const char* get_genre_color(genre_t genre);
 
 /* REFERENCE
 
-The \033 represents the ASCII escape character (octal notation) - it tells the terminal "Hey, special command coming up!" The [ starts the control sequence, and what follows are the parameters:
+The \033 represents the ASCII escape character (octal notation) - it tells the terminal "Hey, special command coming up!"
+The [ starts the control sequence, and what follows are the parameters:
 
 31m means "set text color to red"
 32m means "set text color to green"
 And so on...
-These are called ANSI escape codes or VT100 escape sequences, dating back to old terminal systems. The basic color palette includes:
+These are the ANSI escape codes or VT100 escape sequences, dating back to old terminal systems. The basic color palette includes:
 
 Text colors (30-37):
 
