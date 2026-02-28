@@ -200,7 +200,7 @@ bool save_games(const char* filename, hash_table_t *ht) {
 // still, handy to know what is happening in the whole csv process
 
 /*
-For your save_to_csv function:
+For the save_to_csv function:
     Opening a file for writing
     Getting the list of games
     Converting each game to CSV format
@@ -208,188 +208,15 @@ For your save_to_csv function:
     Closing the file
     Returning success/failure
 
-And for your load_from_csv function:
+For the load_from_csv function:
     Opening the existing file (if it exists)
     Reading each line
     Parsing CSV format into game objects
     Adding each game to your hash table
     Closing the file
     Returning the populated hash table
-
-
-These are solid foundations! A few questions to help you think through this:
-
-What happens if the file doesn't exist when loading?
-How will you handle errors during the reading/writing process?
-Have you considered what delimiter you'll use in your CSV format?
-What properties of your game objects will you need to save/restore?
 */
 
-
-
-/* boots suggestions for self-implemeneting csv
-
-bool save_games_to_csv(hash_table_t *table, const char *filename) {
-    if (table == NULL || filename == NULL) {
-        return false;
-    }
-    
-    FILE *file = fopen(filename, "w");
-    if (file == NULL) {
-        fprintf(stderr, "Failed to open file for writing: %s\n", filename);
-        return false;
-    }
-    
-    // Write header row
-    fprintf(file, "title,genre,platform\n");
-    
-    // Get all games and write them to the file
-    game_t **games = get_games_list(table);
-    if (games == NULL) {
-        fclose(file);
-        return false;
-    }
-    
-    // Write each game to the file
-    for (size_t i = 0; i < table->count; i++) {
-        // Write each field, handling commas and quotes properly
-        // ...
-    }
-    
-    free(games);
-    fclose(file);
-    return true;
-}
-
-
-char* prepare_csv_field(const char* field) {
-    // First, check if we need quotes at all
-    bool needs_quotes = false;
-    int quote_count = 0;
-    
-    for (int i = 0; field[i]; i++) {
-        if (field[i] == ',' || field[i] == '"' || field[i] == '\n') {
-            needs_quotes = true;
-        }
-        if (field[i] == '"') {
-            quote_count++;
-        }
-    }
-    
-    if (!needs_quotes) {
-        // Just return a copy of the original
-        return strdup(field);
-    }
-    
-    // Allocate space for the quoted version
-    // Original + quote_count extra quotes + 2 for surrounding quotes + 1 for null
-    char* quoted = malloc(strlen(field) + quote_count + 2 + 1);
-    
-    // Add opening quote
-    int pos = 0;
-    quoted[pos++] = '"';
-    
-    // Copy with quote doubling
-    for (int i = 0; field[i]; i++) {
-        quoted[pos++] = field[i];
-        if (field[i] == '"') {
-            // Add an extra quote
-            quoted[pos++] = '"';
-        }
-    }
-    
-    // Add closing quote and null terminator
-    quoted[pos++] = '"';
-    quoted[pos] = '\0';
-    
-    return quoted;
-}
-
-
-
-
-// This function parses one field from a CSV line
-// It updates the position pointer to the start of the next field
-char* parse_csv_field(const char* line, int* position) {
-    int start = *position;
-    int end;
-    bool in_quotes = false;
-    
-    // Check if field starts with quotes
-    if (line[start] == '"') {
-        in_quotes = true;
-        start++; // Skip the opening quote
-        
-        // Find the closing quote (accounting for doubled quotes)
-        end = start;
-        while (line[end]) {
-            if (line[end] == '"') {
-                // Check if it's a doubled quote
-                if (line[end+1] == '"') {
-                    end++; // Skip one of the quotes
-                } else {
-                    break; // Found closing quote
-                }
-            }
-            end++;
-        }
-        
-        // Update position to after the closing quote and comma
-        *position = end + 2;
-    } else {
-        // For non-quoted fields, find the next comma
-        end = start;
-        while (line[end] && line[end] != ',') {
-            end++;
-        }
-        
-        // Update position to after the comma
-        *position = end + 1;
-    }
-    
-    // Copy the field contents
-    int length = end - start;
-    char* field = malloc(length + 1);
-    
-    // Handle doubled quotes during copy for quoted fields
-    if (in_quotes) {
-        int write_pos = 0;
-        for (int read_pos = start; read_pos < end; read_pos++) {
-            field[write_pos++] = line[read_pos];
-            // Skip the next quote if it's a doubled quote
-            if (line[read_pos] == '"' && line[read_pos+1] == '"') {
-                read_pos++;
-            }
-        }
-        field[write_pos] = '\0';
-    } else {
-        // Simple copy for non-quoted fields
-        strncpy(field, line + start, length);
-        field[length] = '\0';
-    }
-    
-    return field;
-}
-
-// Example function to parse a full CSV line
-Game* parse_csv_line(const char* line) {
-    int position = 0;
-    
-    // Parse each field
-    char* title = parse_csv_field(line, &position);
-    char* genre = parse_csv_field(line, &position);
-    char* platform = parse_csv_field(line, &position);
-    
-    // Create game object
-    Game* game = create_game(title, genre, platform);
-    
-    // Free the temporary strings
-    free(title);
-    free(genre);
-    free(platform);
-    
-    return game;
-}
 
 
 */
