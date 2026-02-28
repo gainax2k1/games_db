@@ -145,14 +145,7 @@ Begin reading the file in chunks
 For each chunk, the parser finds fields and calls our field callback
 When a full record is processed, the record callback is called
 The record callback creates a game and adds it to our hash table
-6
 
-
-Boots
-continue
-
-Boots
-Flow of Execution (continued)
 After reading the entire file, finalize parsing to handle any incomplete records
 When saving, iterate through all hash table entries
 For each game object, format and write its fields as a CSV record
@@ -188,31 +181,4 @@ Add logging or detailed error reporting
 This event-driven, callback-based approach is ideal for processing large CSV files efficiently while maintaining a clean separation between parsing logic and application-specific data handling.
 
 
-
-
-*/
-/*
-For your save_to_csv function:
-    Opening a file for writing
-    Getting the list of games
-    Converting each game to CSV format
-    Writing to the file
-    Closing the file
-    Returning success/failure
-
-And for your load_from_csv function:
-    Opening the existing file (if it exists)
-    Reading each line
-    Parsing CSV format into game objects
-    Adding each game to your hash table
-    Closing the file
-    Returning the populated hash table
-
-
-These are solid foundations! A few questions to help you think through this:
-
-What happens if the file doesn't exist when loading?
-How will you handle errors during the reading/writing process?
-Have you considered what delimiter you'll use in your CSV format?
-What properties of your game objects will you need to save/restore?
 */
