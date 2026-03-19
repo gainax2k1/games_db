@@ -1,10 +1,10 @@
 # Motivation #
-This is my first independent project for my boot.dev course. The goal is to create a videogame database for videogame collection.
-This will include:
-- text based interface
+This is my first independent project for my Boot.Dev course. The goal is to create a videogame database for videogame collection. I wanted to practice my memory management in C, so it utilizes a hash linked list for storage, and file I/O using the libcsv library.
+
+This includes:
+- text based interface with color
 - adding/removing/editing games to the database
 - sorting and searching by name
-- color coded genre and platform
 - saving to file (in .CSV)
 
 ## Quickstart
