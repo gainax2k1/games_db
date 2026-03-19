@@ -217,6 +217,3 @@ For the load_from_csv function:
     Returning the populated hash table
 */
 
-
-
-*/
